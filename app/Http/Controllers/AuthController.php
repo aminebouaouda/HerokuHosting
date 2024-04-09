@@ -44,18 +44,18 @@ class AuthController extends Controller
 //Login
 public function login(Request $request)
 {
-    $request->validate([
+    $credentials = $request->validate([
         'email' => 'required|email',
         'password' => 'required',
     ]);
 
-    if (Auth::attempt($request->only('email', 'password'))) {
+    if (Auth::attempt($credentials)) {
         $user = Auth::user();
-    
         return response()->json([
             'message' => 'Login successful',
-            'role' => $user->role, 
-        ]);
+            'role' => $user->role, // Assuming you have a 'role' field in your User model
+            'token' => $user->createToken('MyAppToken')->plainTextToken,
+        ], 200);
     }
 
     return response()->json([
@@ -66,19 +66,18 @@ public function login(Request $request)
 
 //PROFILE
 
-public function profile(){
+public function profile(Request $request){
 
-    $userData = User::find(10);
+    $userData = User::find($request->user_id);
 
         if ($userData) {
             return response()->json([
-                'message' => 'Login successful',
-                'role' => $user->role,
+                'message' => 'successful',
                 'userData' => $userData, // Return user data where ID equals 10
             ]);
         } else {
             return response()->json([
-                'message' => 'User data not found for ID 10',
+                'message' => 'User data not found',
             ], 404);
         }
 }

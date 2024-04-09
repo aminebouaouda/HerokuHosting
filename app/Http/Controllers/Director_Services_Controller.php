@@ -43,11 +43,13 @@ class Director_Services_Controller extends Controller
         }
     }
 
+    //Drop Employee
+
     public function DropEmployee(Request $request){
 
         $Derictor_id = $request->Derictor_id;
         $Employee_id = $request->Employee_id;
-    
+
         $director = User::where('id', $Derictor_id)->where('role', 'Derictor')->first();
         // $employee = User::where('id', $Employee_id)->first();
 
@@ -68,5 +70,16 @@ class Director_Services_Controller extends Controller
         }else{
             return response()->json(['error' => 'You dont have permission to delet this user'], 403);
         }
+    }
+
+    //Fetch Emplyee
+
+    public function FetchEmployee(Request $request){
+
+        $companyName = $request->companyname;
+
+        $employees = User::where('CompanyName', $companyName)->get();
+        return $employees;
+
     }
 }
