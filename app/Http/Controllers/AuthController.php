@@ -20,6 +20,15 @@ class AuthController extends Controller
             'password' => 'required|min:6',
         ]);
 
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $new_name = rand().'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('/upload/images'), $new_name);
+            // return response()->json($new_name);
+        } else {
+            $new_name = '123.jpg';
+        }
+
         $user = User::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
@@ -28,7 +37,8 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => $request->password,
             'role' => 'Derictor',
-            'isactive'=>1
+            'isactive'=>1,
+            'profile'=>$new_name
         ]);
 
         return response()->json([

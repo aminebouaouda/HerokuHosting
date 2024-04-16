@@ -22,6 +22,7 @@ Route::post('/profile', [AuthController::class, 'profile']);
 Route::post('/AddEmployee', [Director_Services_Controller::class, 'AddEmployee']);
 Route::post('/DropEmployee', [Director_Services_Controller::class, 'DropEmployee']);
 Route::post('/FetchEmployee', [Director_Services_Controller::class, 'FetchEmployee']);
+Route::post('/uploadimage', [Director_Services_Controller::class, 'uploadimage']);
 
 Route::post('/pointage', [Emplyee_Services_Controller::class, 'pointage']);
 

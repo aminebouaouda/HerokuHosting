@@ -25,6 +25,15 @@ class Director_Services_Controller extends Controller
 
             $companyName = $director->CompanyName; // Access the CompanyName property from the director user
 
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $new_name = rand().'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('/upload/images'), $new_name);
+            // return response()->json($new_name);
+        } else {
+            $new_name = '123.jpg';
+        }
+
             $user = User::create([
                 'firstname' => $request->firstname,
                 'lastname' => $request->lastname,
@@ -34,13 +43,18 @@ class Director_Services_Controller extends Controller
                 'password' => $request->email,
                 'role' => $request->role,
                 'isactive' => $request->isactive,
+                'profile' => $new_name
             ]);
-    
-            return $user;
-        } else {
-            // Return an error response if the director does not exist or has the incorrect role
-            return response()->json(['error' => 'You dont have permission to add this user'], 403);
-        }
+             return response()->json([
+                'message' => 'Employee add successful',
+                'user' => $user,
+            ], 200);
+
+            } else {
+            return response()->json([
+                'message' => 'You dont have permission to add this user',
+            ], 403);
+            }
     }
 
     //Drop Employee
@@ -74,12 +88,37 @@ class Director_Services_Controller extends Controller
 
     //Fetch Emplyee
 
-    public function FetchEmployee(Request $request){
-
+    public function FetchEmployee(Request $request)
+    {
         $companyName = $request->companyname;
-
-        $employees = User::where('CompanyName', $companyName)->get();
+    
+        // Fetch employees where role is not 'Director' (assuming 'RH' is the role for Director)
+        $employees = User::where('CompanyName', $companyName)
+                        ->whereNotIn('role', ['Derictor'])
+                        ->orderByDesc('id')
+                        ->get();
+    
         return $employees;
-
     }
+    
+
+
+    //Upload image
+
+    public function uploadimage(Request $request){
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $new_name = rand().'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('/upload/images'), $new_name);
+            return response()->json([
+                'message' => 'image upload successful',
+                'name' => $new_name,
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'image upload failed',
+            ], 403);
+        }
+    }
+    
 }
