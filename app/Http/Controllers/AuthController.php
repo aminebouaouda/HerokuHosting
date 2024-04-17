@@ -43,8 +43,8 @@ class AuthController extends Controller
 
         return response()->json([
             'message' => 'SignUp successful',
-            'datat' => $user, 
-        ]);
+            'data' => $user, 
+        ],200);
 
         return response()->json([
             'message' => 'Invalid SignUp',
@@ -64,6 +64,7 @@ public function login(Request $request)
         return response()->json([
             'message' => 'Login successful',
             'role' => $user->role, // Assuming you have a 'role' field in your User model
+            'id' => $user->id, // Assuming you have a 'id' field in your User model
             'token' => $user->createToken('MyAppToken')->plainTextToken,
         ], 200);
     }
@@ -72,6 +73,7 @@ public function login(Request $request)
         'message' => 'Invalid credentials',
     ], 401);
 }
+
 
 
 //PROFILE
@@ -91,6 +93,29 @@ public function profile(Request $request){
             ], 404);
         }
 }
+
+//Check Email
+public function checkEmail(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+    ]);
+
+    $user = User::where('email', $request->email)->first();
+
+    if ($user) {
+        return response()->json([
+            'message' => 'Email found',
+            'user' => $user, // Optional: You can return the user data if needed
+        ], 200);
+    }
+
+    return response()->json([
+        'message' => 'Email not found',
+    ], 404);
+}
+
+
 
 
 }

@@ -18,6 +18,7 @@ Route::get('/test', [AuthController::class, 'test']);
 Route::post('/createCompte', [AuthController::class, 'createCompte']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/profile', [AuthController::class, 'profile']);
+Route::post('/checkEmail', [AuthController::class, 'checkEmail']);
 
 Route::post('/AddEmployee', [Director_Services_Controller::class, 'AddEmployee']);
 Route::post('/DropEmployee', [Director_Services_Controller::class, 'DropEmployee']);
