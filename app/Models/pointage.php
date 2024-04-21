@@ -10,16 +10,12 @@ class Pointage extends Model
     use HasFactory;
 
     protected $fillable = [
-        'morning_entry',
-        'morning_exit',
-        'evening_entry',
-        'evening_exit',
-        'totale_hours',
+        'time_entry',
+        'pause_exit',
+        'pause_entry',
+        'time_exit',
         'extra_hours',
         'date_pointage',
-        'is_absent_morning',
-        'is_absent_evening',
-        'id_pointeur',
         'id_employee'
     ];
 }

@@ -26,6 +26,8 @@ Route::post('/FetchEmployee', [Director_Services_Controller::class, 'FetchEmploy
 Route::post('/uploadimage', [Director_Services_Controller::class, 'uploadimage']);
 
 Route::post('/pointage', [Emplyee_Services_Controller::class, 'pointage']);
+Route::post('/updatePauseExit', [Emplyee_Services_Controller::class, 'updatePauseExit']);
+Route::post('/updatePauseEntry', [Emplyee_Services_Controller::class, 'updatePauseEntry']);
 
 Route::post('/AddVacation', [VacationController::class, 'AddVacation']);
 
