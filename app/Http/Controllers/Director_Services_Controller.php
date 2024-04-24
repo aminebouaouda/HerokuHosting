@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Carbon\Carbon;
+use App\Models\Project;
+
 
 class Director_Services_Controller extends Controller
 {
@@ -121,4 +124,165 @@ class Director_Services_Controller extends Controller
         }
     }
     
+    // getEmployeesNotClockedIn
+
+    public function getEmployeesNotClockedIn(Request $request)
+    {
+        // Get the current date in the format: year-month-day
+        $currentDate = Carbon::now()->toDateString();
+         
+        $usersNotClockedIn = User::leftJoin('pointages', function($join) {
+            $join->on('users.id', '=', 'pointages.id_employee');
+        })
+        ->whereNull('pointages.id_employee')
+        ->orWhereRaw('users.id != pointages.id_employee')
+        ->orWhere(function($query) use ($currentDate) {
+            $query->whereRaw('DATE(pointages.date_pointage) != ?', [$currentDate])
+                  ->orWhereNull('pointages.date_pointage');
+        })
+        ->where('users.CompanyName', $request->CompanyName)
+        // ->whereNotIn('role', ['Director'])
+        ->select('users.*')
+        ->get();
+
+    //    return $usersNotClockedIn;
+
+       if ($usersNotClockedIn) {
+        return response()->json([
+            'message' => 'successfully',
+            'data' => $usersNotClockedIn
+        ], 200);
+    } else {
+        return response()->json([
+            'message' => 'Failed to Find Employee'
+        ], 500);
+    }
+    }
+
+
+    //Emploiyee how check in
+
+    public function getEmployeesWithTimeEntry(Request $request)
+    {
+        // Get the current date in the format: year-month-day
+        $currentDate = Carbon::now()->toDateString();
+    
+        $employeesWithTimeEntry = User::join('pointages', function($join) {
+                $join->on('users.id', '=', 'pointages.id_employee')
+                     ->where('pointages.date_pointage', '=', Carbon::today());
+            })
+            ->where('users.CompanyName', $request->CompanyName)
+            // Exclude users with the role of 'Director'
+            ->whereNotIn('users.role', ['Director'])
+            ->select('users.*')
+            ->distinct()
+            ->get();
+    
+        return $employeesWithTimeEntry;
+    }
+    
+
+    //Employee Take Breake
+    public function getEmploiyeesTakebreak(Request $request)
+    {
+        // Get the current date in the format: year-month-day
+        $currentDate = Carbon::now()->toDateString();
+    
+        $employeesWithTimeEntry = User::join('pointages', function($join) {
+                $join->on('users.id', '=', 'pointages.id_employee')
+                     ->where('pointages.date_pointage', '=', Carbon::today());
+            })
+            ->where('users.CompanyName', $request->CompanyName)
+            ->whereNotNull('pointages.pause_exit')
+            // Exclude users with the role of 'Director'
+            ->whereNotIn('users.role', ['Director'])
+            ->select('users.*')
+            ->distinct()
+            ->get();
+    
+        return $employeesWithTimeEntry;
+    }
+    
+
+
+    //Employee After Breake
+    public function getEmploiyeesAfterBreak(Request $request)
+    {
+        // Get the current date in the format: year-month-day
+        $currentDate = Carbon::now()->toDateString();
+    
+        $employeesWithTimeEntry = User::join('pointages', function($join) {
+                $join->on('users.id', '=', 'pointages.id_employee')
+                     ->where('pointages.date_pointage', '=', Carbon::today());
+            })
+            ->where('users.CompanyName', $request->CompanyName)
+            ->whereNotNull('pointages.pause_entry')
+            // Exclude users with the role of 'Director'
+            ->whereNotIn('users.role', ['Director'])
+            ->select('users.*')
+            ->distinct()
+            ->get();
+    
+        return $employeesWithTimeEntry;
+    }
+
+    
+    //Employee Leave Work
+    public function getEmployeeLeave(Request $request)
+    {
+        // Get the current date in the format: year-month-day
+        $currentDate = Carbon::now()->toDateString();
+    
+        $employeesWithTimeEntry = User::join('pointages', function($join) {
+                $join->on('users.id', '=', 'pointages.id_employee')
+                     ->where('pointages.date_pointage', '=', Carbon::today());
+            })
+            ->where('users.CompanyName', $request->CompanyName)
+            ->whereNotNull('pointages.time_exit')
+            // Exclude users with the role of 'Director'
+            ->whereNotIn('users.role', ['Director'])
+            ->select('users.*')
+            ->distinct()
+            ->get();
+    
+        return $employeesWithTimeEntry;
+    }
+
+    //ADD PROJECTS
+    public function AddProject(Request $request)
+    {
+        $project = Project::create([
+            'name' => $request->name,
+            'description' => $request->description,
+            'company_name' => $request->company_name, // Corrected from 'companyName'
+        ]);
+    
+        // Return a JSON response with success message and the created project
+        return response()->json([
+            'message' => 'Project added successfully',
+            'project' => $project,
+        ], 200);
+    }
+
+        //FetchEmploiyee
+        public function fetchProjects(Request $request)
+{
+    // Retrieve projects where company_name is 'gmsoft' from the database
+    $projects = Project::where('company_name', $request->company_name)->get();
+
+    // Check if any projects were found
+    if ($projects->isEmpty()) {
+        return response()->json([
+            'message' => 'No projects found for company gmsoft',
+            'projects' => [],
+        ], 404);
+    }
+
+    // Return the projects as a JSON response
+    return response()->json([
+        'message' => 'Projects fetched successfully',
+        'projects' => $projects,
+    ], 200);
+}
+
 }

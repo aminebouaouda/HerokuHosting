@@ -115,6 +115,28 @@ public function checkEmail(Request $request)
     ], 404);
 }
 
+//Check CompanyName
+public function checkCompanyName(Request $request)
+{
+    $request->validate([
+        'CompanyName' => 'required|string', // Ensure 'CompanyName' is provided and is a string
+    ]);
+
+    $user = User::where('CompanyName', $request->CompanyName)->first();
+
+    if ($user) {
+        return response()->json([
+            'message' => 'CompanyName found',
+            'user' => $user, // Optional: You can return the user data if needed
+        ], 200);
+    }
+
+    return response()->json([
+        'message' => 'CompanyName not found',
+    ], 404);
+}
+
+
 
 
 
