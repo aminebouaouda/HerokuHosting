@@ -19,16 +19,18 @@ class AuthController extends Controller
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
         ]);
-
+    
+        // Check if an image is uploaded
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $new_name = rand().'.'.$image->getClientOriginalExtension();
             $image->move(public_path('/upload/images'), $new_name);
-            // return response()->json($new_name);
         } else {
+            // If no image is uploaded, assign a default image name
             $new_name = '123.jpg';
         }
-
+    
+        // Create the user
         $user = User::create([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
@@ -36,21 +38,26 @@ class AuthController extends Controller
             'telephone' => $request->telephone,
             'email' => $request->email,
             'password' => $request->password,
-            'role' => 'Derictor',
-            'isactive'=>1,
-            'profile'=>$new_name
+            'role' => 'Derictor', // Is this intended to be 'Director'?
+            'isactive' => 1,
+            'profile' => $new_name
         ]);
-
-        return response()->json([
-            'message' => 'SignUp successful',
-            'data' => $user, 
-        ],200);
-
-        return response()->json([
-            'message' => 'Invalid SignUp',
-        ], 401);
+    
+        // Check if user creation was successful
+        if ($user) {
+            // Return success response with user data
+            return response()->json([
+                'message' => 'SignUp successful',
+                'data' => $user
+            ], 200);
+        } else {
+            // Return error response
+            return response()->json([
+                'message' => 'Invalid SignUp'
+            ], 401);
+        }
     }
-
+    
 //Login
 public function login(Request $request)
 {
