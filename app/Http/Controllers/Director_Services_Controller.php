@@ -264,25 +264,46 @@ class Director_Services_Controller extends Controller
         ], 200);
     }
 
-        //FetchEmploiyee
-        public function fetchProjects(Request $request)
-{
-    // Retrieve projects where company_name is 'gmsoft' from the database
-    $projects = Project::where('company_name', $request->company_name)->get();
 
-    // Check if any projects were found
-    if ($projects->isEmpty()) {
+    //FetchEmploiyee
+    public function fetchProjects(Request $request)
+    {
+        // Retrieve projects where company_name is 'gmsoft' from the database and order them by ID in descending order
+        $projects = Project::where('company_name', $request->company_name)
+                            ->orderBy('id', 'desc')
+                            ->get();
+    
+        // Check if any projects were found
+        if ($projects->isEmpty()) {
+            return response()->json([
+                'message' => 'No projects found for company gmsoft',
+                'projects' => [],
+            ], 404);
+        }
+    
+        // Return the projects as a JSON response
         return response()->json([
-            'message' => 'No projects found for company gmsoft',
-            'projects' => [],
-        ], 404);
+            'message' => 'Projects fetched successfully',
+            'projects' => $projects,
+        ], 200);
     }
+    
 
-    // Return the projects as a JSON response
-    return response()->json([
-        'message' => 'Projects fetched successfully',
-        'projects' => $projects,
-    ], 200);
-}
+    //Drop Employee
+    public function DeleteProject(Request $request)
+    {
+    // Find the project by its ID
+    $project = Project::find($request->id);
 
+    // Check if the project exists
+    if ($project) {
+        // Delete the project
+        $project->delete();
+        return response()->json(['message' => 'Project deleted successfully'], 200);
+    } else {
+        // Project not found
+        return response()->json(['message' => 'Project not found'], 404);
+   
+    }
+    }
 }
