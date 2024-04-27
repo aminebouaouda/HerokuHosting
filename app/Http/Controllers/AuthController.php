@@ -12,6 +12,8 @@ class AuthController extends Controller
     // Create a user account
     public function createCompte(Request $request)
     {
+
+
         $request->validate([
             'firstname' => 'required',
             'lastname' => 'required',
@@ -142,9 +144,6 @@ public function checkCompanyName(Request $request)
         'message' => 'CompanyName not found',
     ], 404);
 }
-
-
-
 
 
 }

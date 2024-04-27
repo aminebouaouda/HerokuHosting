@@ -26,7 +26,7 @@ class Director_Services_Controller extends Controller
                 'email' => 'required|email|unique:users',
             ]);
 
-            $companyName = $director->CompanyName; // Access the CompanyName property from the director user
+            $companyName = $director->CompanyName; 
 
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -264,7 +264,7 @@ class Director_Services_Controller extends Controller
         ], 200);
     }
 
-        //FetchEmploiyee
+       
         public function fetchProjects(Request $request)
 {
     // Retrieve projects where company_name is 'gmsoft' from the database
