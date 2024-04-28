@@ -33,6 +33,7 @@ Route::post('/getEmploiyeesAfterBreak', [Director_Services_Controller::class, 'g
 Route::post('/getEmployeeLeave', [Director_Services_Controller::class, 'getEmployeeLeave']);
 Route::post('/AddProject', [Director_Services_Controller::class, 'AddProject']);
 Route::post('/fetchProjects', [Director_Services_Controller::class, 'fetchProjects']);
+Route::post('/DeleteProject', [Director_Services_Controller::class, 'DeleteProject']);
 
 //Pointage
 Route::post('/pointage', [Emplyee_Services_Controller::class, 'pointage']);
