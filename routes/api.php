@@ -41,5 +41,14 @@ Route::post('/updatePauseExit', [Emplyee_Services_Controller::class, 'updatePaus
 Route::post('/updatePauseEntry', [Emplyee_Services_Controller::class, 'updatePauseEntry']);
 Route::post('/TimeExite', [Emplyee_Services_Controller::class, 'TimeExite']);
 
-Route::post('/AddVacation', [VacationController::class, 'AddVacation']);
-
+// Route::post('/addVacation', [VacationController::class, 'AddVacation']);
+// Route::post('/updateVacation', [VacationController::class, 'UpdateVacation']);
+// Route::post('/deleteVacation', [VacationController::class, 'DeleteVacation']);
+// Route::post('/fetchVacation', [VacationController::class, 'FetchVacation']);
+//the authentifacted eprson shoudl use to send a vaction demand to the adminstartor
+// Route::middleware('auth')->group(function () {
+//     Route::post('/addVacation', [VacationController::class, 'AddVacation']);
+//     Route::post('/updateVacation', [VacationController::class, 'UpdateVacation']);
+//     Route::post('/deleteVacation', [VacationController::class, 'DeleteVacation']);
+//     Route::post('/fetchVacation', [VacationController::class, 'FetchVacation']);
+// });
