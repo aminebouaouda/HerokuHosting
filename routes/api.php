@@ -43,3 +43,13 @@ Route::post('/TimeExite', [Emplyee_Services_Controller::class, 'TimeExite']);
 
 Route::post('/AddVacation', [VacationController::class, 'AddVacation']);
 
+
+
+//Vacation
+Route::post('/AddVacation', [VacationController::class, 'AddVacation']);
+Route::post('/fetchVacationsDerictore', [VacationController::class, 'fetchVacationsDerictore']);
+Route::post('/fetchVacationsEmployee', [VacationController::class, 'fetchVacationsEmployee']);
+Route::post('/deleteVacation', [VacationController::class, 'deleteVacation']);
+Route::post('/updateVacationStatus', [VacationController::class, 'updateVacationStatus']);
+
+
