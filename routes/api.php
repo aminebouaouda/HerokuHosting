@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Director_Services_Controller;
 use App\Http\Controllers\Emplyee_Services_Controller;
 use App\Http\Controllers\VacationController;
+use App\Http\Controllers\OrderDeplacmentController;
 
 
 Route::get('/user', function (Request $request) {
@@ -41,7 +42,7 @@ Route::post('/updatePauseExit', [Emplyee_Services_Controller::class, 'updatePaus
 Route::post('/updatePauseEntry', [Emplyee_Services_Controller::class, 'updatePauseEntry']);
 Route::post('/TimeExite', [Emplyee_Services_Controller::class, 'TimeExite']);
 
-Route::post('/AddVacation', [VacationController::class, 'AddVacation']);
+// Route::post('/AddVacation', [VacationController::class, 'AddVacation']);
 
 
 
@@ -51,5 +52,10 @@ Route::post('/fetchVacationsDerictore', [VacationController::class, 'fetchVacati
 Route::post('/fetchVacationsEmployee', [VacationController::class, 'fetchVacationsEmployee']);
 Route::post('/deleteVacation', [VacationController::class, 'deleteVacation']);
 Route::post('/updateVacationStatus', [VacationController::class, 'updateVacationStatus']);
+
+//OrderDeplacment
+Route::post('/AddDeplacement', [OrderDeplacmentController::class, 'AddDeplacement']);
+Route::post('/fetchOrderDeplacmentsForEmployee', [OrderDeplacmentController::class, 'fetchOrderDeplacmentsForEmployee']);
+
 
 
