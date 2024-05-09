@@ -10,9 +10,10 @@ class Charges extends Model
     use HasFactory;
 
     protected $fillable = [
-        'titel',
-        'prix',
-        'prove',
-        'id_employee'
+        'id_order_deployment',
+        'id_employee',
+        'text',
+        'budget_total',
+        'images'
     ];
 }

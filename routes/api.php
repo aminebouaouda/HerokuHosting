@@ -56,6 +56,13 @@ Route::post('/updateVacationStatus', [VacationController::class, 'updateVacation
 //OrderDeplacment
 Route::post('/AddDeplacement', [OrderDeplacmentController::class, 'AddDeplacement']);
 Route::post('/fetchOrderDeplacmentsForEmployee', [OrderDeplacmentController::class, 'fetchOrderDeplacmentsForEmployee']);
+Route::post('/addCharges', [OrderDeplacmentController::class, 'addCharges']);
+Route::post('/getAllCharges', [OrderDeplacmentController::class, 'getAllCharges']);
+Route::post('/fetchOrderDeplacmentsForCompany', [OrderDeplacmentController::class, 'fetchOrderDeplacmentsForCompany']);
+Route::post('/acceptOrderDeplacment', [OrderDeplacmentController::class, 'acceptOrderDeplacment']);
+Route::post('/DeleteOrderDeplacment', [OrderDeplacmentController::class, 'DeleteOrderDeplacment']);
+Route::post('/updateLocalisationVerify', [OrderDeplacmentController::class, 'updateLocalisationVerify']);
+Route::post('/FineMession', [OrderDeplacmentController::class, 'FineMession']);
 
 
 
