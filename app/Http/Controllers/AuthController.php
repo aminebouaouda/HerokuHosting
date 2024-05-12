@@ -143,7 +143,24 @@ public function checkCompanyName(Request $request)
     ], 404);
 }
 
+// Change password by user ID
+public function changePassword(Request $request)
+{
+    $request->validate([
+        'id' => 'required|exists:users,id',
+        'password' => 'required|min:6',
+    ]);
 
+    $user = User::find($request->id);
+
+    // Update the password
+    $user->password = bcrypt($request->password);
+    $user->save();
+
+    return response()->json([
+        'message' => 'Password changed successfully',
+    ], 200);
+}
 
 
 
