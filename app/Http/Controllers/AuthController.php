@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\User; // Import the User model
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\emailMailable; // Assuming you have a Mailable class for sending verification codes
+use Illuminate\Support\Str;
+
 
 
 class AuthController extends Controller
@@ -22,8 +26,9 @@ class AuthController extends Controller
     
         // Check if an image is uploaded
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $new_name = rand().'.'.$image->getClientOriginalExtension();
+            // $image = $request->file('image');
+            // $new_name = rand().'.'.$image->getClientOriginalExtension();
+             $new_name = '123.jpg';
             $image->move(public_path('/upload/images'), $new_name);
         } else {
             // If no image is uploaded, assign a default image name
@@ -72,6 +77,7 @@ public function login(Request $request)
             'message' => 'Login successful',
             'role' => $user->role, // Assuming you have a 'role' field in your User model
             'id' => $user->id, // Assuming you have a 'id' field in your User model
+            'companyName' => $user->CompanyName, // Assuming you have a 'id' field in your User model
             'token' => $user->createToken('MyAppToken')->plainTextToken,
         ], 200);
     }
@@ -162,6 +168,23 @@ public function changePassword(Request $request)
     ], 200);
 }
 
+public function sendVerificationCode(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+    ]);
 
+    // Generate a verification code
+    $verificationCode = Str::random(6);
 
+    // Send the verification code via email
+    Mail::to($request->email)->send(new emailMailable($verificationCode));
+
+    // Optionally, you can check if the email was sent successfully
+    if (Mail::failures()) {
+        return response()->json(['message' => 'Failed to send verification code'], 500);
+    }
+
+    return response()->json(['message' => 'Verification code sent successfully'], 200);
+}
 }

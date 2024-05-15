@@ -12,7 +12,6 @@ class Charges extends Model
     protected $fillable = [
         'id_order_deployment',
         'id_employee',
-        'text',
         'budget_total',
         'images'
     ];

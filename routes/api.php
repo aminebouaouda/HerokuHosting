@@ -23,6 +23,8 @@ Route::post('/profile', [AuthController::class, 'profile']);
 Route::post('/checkEmail', [AuthController::class, 'checkEmail']);
 Route::post('/checkCompanyName', [AuthController::class, 'checkCompanyName']);
 Route::post('/changePassword', [AuthController::class, 'changePassword']);
+Route::post('/sendVerificationCode', [AuthController::class, 'sendVerificationCode']);
+
 
 
 //Services Dericture
