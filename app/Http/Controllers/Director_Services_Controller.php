@@ -285,4 +285,46 @@ class Director_Services_Controller extends Controller
     ], 200);
 }
 
+
+
+
+
+// //PART OF HANDLING THE PROFILES
+// public function fetchAuthenticatedUserData(Request $request)
+// {
+//     try {
+//         // Retrieve authenticated user data
+//         $user = $request->user();
+
+//         // You can modify this logic to fetch additional data as needed
+//         // For example, if you want to fetch additional data from the database,
+//         // you can do something like this:
+//         // $userData = User::findOrFail($user->id);
+
+//         // Return user data as JSON response
+//         return response()->json($user);
+//     } catch (\Exception $e) {
+//         return response()->json(['error' => 'Failed to fetch user information'], 500);
+//     }
+// }
+
+public function fetchAuthenticatedUserData($userId)
+{
+    try {
+        // Find the user(s) by user ID
+        $user = User::find($userId);
+
+        if (!$user) {
+            // User not found
+            return response()->json(['error' => 'User not found'], 404);
+        } else {
+            // Return the user information
+            return response()->json($user);
+        }
+    } catch (\Exception $e) {
+        // Handle any potential errors
+        return response()->json(['error' => 'Failed to fetch user information'], 500);
+    }
+}
+
 }

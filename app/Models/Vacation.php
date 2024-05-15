@@ -2,33 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Vacation extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
-        'title',
-        'remark',
+        'type',
+        'start_date',
+        'end_date',
+        'description',
         'file',
-        'is_accept',
-        'date_demande',
-        'id_employee',
+        'status',
+        'employee_id',
+        'company_name',
     ];
 
-    // Assuming 'file' attribute is a file path
-    // You can define an accessor to generate a full URL for the file
-    public function getFileUrlAttribute()
-    {
-        // Assuming the 'file' attribute stores the file path in public directory
-        return asset('storage/' . $this->file);
-    }
-
-    // Define a relationship with the User model (assuming id_employee is the foreign key)
+    // Define the relationship with the User model
     public function employee()
     {
-        return $this->belongsTo(User::class, 'id_employee');
+        return $this->belongsTo(User::class, 'employee_id');
     }
 }
