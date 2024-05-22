@@ -7,6 +7,11 @@ use App\Http\Controllers\Director_Services_Controller;
 use App\Http\Controllers\Emplyee_Services_Controller;
 use App\Http\Controllers\VacationController;
 use App\Http\Controllers\ResourceController;
+use App\Http\Controllers\TimeTrackingController;
+use App\Http\Controllers\OrderDeplacmentController;
+use App\Http\Controllers\SentFeuilleController;
+use App\Http\Controllers\TrackingController;
+
 
 
 Route::get('/user', function (Request $request) {
@@ -16,11 +21,16 @@ Route::get('/user', function (Request $request) {
 
 Route::get('/test', [AuthController::class, 'test']);
 
+//Authe
 Route::post('/createCompte', [AuthController::class, 'createCompte']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/profile', [AuthController::class, 'profile']);
 Route::post('/checkEmail', [AuthController::class, 'checkEmail']);
 Route::post('/checkCompanyName', [AuthController::class, 'checkCompanyName']);
+Route::post('/changePassword', [AuthController::class, 'changePassword']);
+Route::post('/sendVerificationCode', [AuthController::class, 'sendVerificationCode']);
+
+
 
 //Services Dericture
 Route::post('/AddEmployee', [Director_Services_Controller::class, 'AddEmployee']);
@@ -42,18 +52,38 @@ Route::post('/updatePauseExit', [Emplyee_Services_Controller::class, 'updatePaus
 Route::post('/updatePauseEntry', [Emplyee_Services_Controller::class, 'updatePauseEntry']);
 Route::post('/TimeExite', [Emplyee_Services_Controller::class, 'TimeExite']);
 
+
 Route::post('/AddVacation', [VacationController::class, 'AddVacation']);
 Route::post('/employeeVacations', [VacationController::class, 'employeeVacations']);
 Route::post('/updateVacation', [VacationController::class, 'updateVacation']);
+
+
+
+
+//Vacation
+Route::post('/AddVacation', [VacationController::class, 'AddVacation']);
+Route::post('/fetchVacationsDerictore', [VacationController::class, 'fetchVacationsDerictore']);
+Route::post('/fetchVacationsEmployee', [VacationController::class, 'fetchVacationsEmployee']);
 Route::post('/deleteVacation', [VacationController::class, 'deleteVacation']);
 
 //the director manage the vactiosn
 Route::post('/approveOrRejectVacation', [VacationController::class, 'approveOrRejectVacation']);
 Route::get('/fetchEmployeeVacations', [VacationController::class, 'fetchEmployeeVacations']);
-// Route::get('/FetchUserByEmployeeId', [VacationController::class, 'fetchUserByEmployeeId']);
 Route::get('/FetchUserByEmployeeId/{userId}', [VacationController::class, 'fetchUserByEmployeeId']);
 
 // Route::get('/fetchUserByEmployeeId/{employeeId}', 'UserController@fetchUserByEmployeeId');
+
+//OrderDeplacment
+Route::post('/AddDeplacement', [OrderDeplacmentController::class, 'AddDeplacement']);
+Route::post('/fetchOrderDeplacmentsForEmployee', [OrderDeplacmentController::class, 'fetchOrderDeplacmentsForEmployee']);
+Route::post('/addCharges', [OrderDeplacmentController::class, 'addCharges']);
+Route::post('/getAllCharges', [OrderDeplacmentController::class, 'getAllCharges']);
+Route::post('/fetchOrderDeplacmentsForCompany', [OrderDeplacmentController::class, 'fetchOrderDeplacmentsForCompany']);
+Route::post('/acceptOrderDeplacment', [OrderDeplacmentController::class, 'acceptOrderDeplacment']);
+Route::post('/DeleteOrderDeplacment', [OrderDeplacmentController::class, 'DeleteOrderDeplacment']);
+Route::post('/updateLocalisationVerify', [OrderDeplacmentController::class, 'updateLocalisationVerify']);
+Route::post('/FineMession', [OrderDeplacmentController::class, 'FineMession']);
+
 
 
 
@@ -61,15 +91,11 @@ Route::get('/FetchUserByEmployeeId/{userId}', [VacationController::class, 'fetch
 Route::get('/fetchAuthenticatedUserData/{userId}', [Director_Services_Controller::class, 'fetchAuthenticatedUserData']);
 
 
-// Route::delete('/payments/{paymentId}', 'PaymentController@deletePayment');
 
-
-// Route::get('/fetchPayments'
 //paiment 
 Route::post('/paymentsAdd', [ResourceController::class, 'addPayment']);
 Route::get('/fetchPayments', [ResourceController::class, 'fetchPayments']);
 Route::delete('/deletePayments/{paymentId}', [ResourceController::class, 'deletePayments']);
-// Route::delete('/deletePayments/{paymentId}', [ResourceController::class, 'deletePayments']);
 Route::put('/updatePaymentStatus/{paymentId}', [ResourceController::class, 'updatePaymentStatus']);
 
 
@@ -82,9 +108,31 @@ Route::get('/fetchPayment_modes', [ResourceController::class, 'fetchPaymentModes
 Route::delete('/deletePayment_modes/{id}',[ResourceController::class, 'deletePaymentMode']);
 
 
+
 //facture
 Route::post('/addInvoices',[ResourceController::class, 'addInvoices']);
 Route::get('/fetchInvoices',[ResourceController::class, 'fetchInvoices']);
-
 Route::delete('/deleteInvoice/{id}', [ResourceController::class, 'deleteInvoice']);
-// Route::get('/fetchInvoices', 'App\Http\Controllers\InvoiceController@fetchInvoices');
+
+
+
+
+//pour feuille de temps employer
+Route::post('/save-time-data', [TimeTrackingController::class, 'saveTimeData']);
+Route::get('/projects', [TimeTrackingController::class, 'FtechProjects']);
+Route::get('/get-total-regular-time', [TimeTrackingController::class, 'getTotalRegularTime']);
+Route::get('/projects', [TimeTrackingController::class, 'getProjects']);
+Route::get('/sum_regular', [TimeTrackingController::class, 'TotalRegularTime']);
+Route::delete('/delete_project', [TimeTrackingController::class, 'deleteProject']);
+Route::post('/sent-feuille', [SentFeuilleController::class, 'store']);
+Route::get('check-feuille', [SentFeuilleController::class, 'checkFeuille']);
+
+
+//for new Tracking
+Route::post('/startTracking', [TrackingController::class, 'startTracking']);
+Route::post('/pauseTracking/{trackingId}', [TrackingController::class, 'pauseTracking']);
+Route::post('/resumeTracking/{trackingId}', [TrackingController::class, 'resumeTracking']);
+Route::post('/stopTracking/{trackingId}', [TrackingController::class, 'stopTracking']);
+Route::post('/updateTrackingRemarks/{trackingId}', [TrackingController::class, 'updateTrackingRemarks']);
+Route::post('/startPause/{trackingId}', [TrackingController::class, 'startPause']);
+Route::post('/endPause/{trackingId}', [TrackingController::class, 'endPause']);

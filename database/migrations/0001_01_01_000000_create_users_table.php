@@ -22,6 +22,19 @@ return new class extends Migration
             $table->string('profile_photo_path', 2048)->nullable();
             $table->timestamps();
         });
+        // Schema::create('users', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->string('firstname')->nullable();
+        //     $table->string('lastname')->nullable();
+        //     $table->string('companyName')->nullable();
+        //     $table->string('telephone')->nullable();
+        //     $table->string('email')->unique();
+        //     $table->string('password');
+        //     $table->string('role')->nullable();
+        //     $table->boolean('isactive')->default(false);
+        //     $table->timestamps(); // This will create both created_at and updated_at columns
+        //     $table->string('profile')->nullable();
+        // });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
