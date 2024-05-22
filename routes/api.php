@@ -128,7 +128,7 @@ Route::post('/sent-feuille', [SentFeuilleController::class, 'store']);
 Route::get('check-feuille', [SentFeuilleController::class, 'checkFeuille']);
 
 
-//for new Tracking
+//for new Tracking 2
 Route::post('/startTracking', [TrackingController::class, 'startTracking']);
 Route::post('/pauseTracking/{trackingId}', [TrackingController::class, 'pauseTracking']);
 Route::post('/resumeTracking/{trackingId}', [TrackingController::class, 'resumeTracking']);
