@@ -19,6 +19,8 @@ class OrderDeplacment extends Model
         'fine_mission',
         'mession_verify',
         'budget_total',
-        'id_employee'
+        'id_employee',
+        'debut',
+        'arriver'
     ];
 }

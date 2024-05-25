@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Carbon\Carbon;
 use App\Models\Project;
+use App\Models\Pointage;
+use Illuminate\Support\Facades\DB;
 
 
 class Director_Services_Controller extends Controller
 {
     //ADD EMPLOYEE
-
     public function AddEmployee(Request $request)
     {
         $added_by = $request->added_by;
@@ -90,7 +91,6 @@ class Director_Services_Controller extends Controller
     }
 
     //Fetch Emplyee
-
     public function FetchEmployee(Request $request)
     {
         $companyName = $request->companyname;
@@ -107,7 +107,6 @@ class Director_Services_Controller extends Controller
 
 
     //Upload image
-
     public function uploadimage(Request $request){
         if ($request->hasFile('image')) {
             $image = $request->file('image');
@@ -125,7 +124,6 @@ class Director_Services_Controller extends Controller
     }
     
     // getEmployeesNotClockedIn
-
     public function getEmployeesNotClockedIn(Request $request)
     {
         // Get the current date in the format: year-month-day
@@ -265,7 +263,7 @@ class Director_Services_Controller extends Controller
     }
 
        
-        public function fetchProjects(Request $request)
+     public function fetchProjects(Request $request)
 {
     // Retrieve projects where company_name is 'gmsoft' from the database
     $projects = Project::where('company_name', $request->company_name)->get();
@@ -326,5 +324,24 @@ public function fetchAuthenticatedUserData($userId)
         return response()->json(['error' => 'Failed to fetch user information'], 500);
     }
 }
+    public function getMostActiveEmployees()
+    {
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
 
+        $mostActiveEmployees = Pointage::select('id_employee', DB::raw('count(*) as total_pointages'))
+            ->whereMonth('date_pointage', $currentMonth)
+            ->whereYear('date_pointage', $currentYear)
+            ->groupBy('id_employee')
+            ->orderBy('total_pointages', 'desc')
+            ->take(5)
+            ->get();
+
+        return response()->json([
+            'message' => 'Most active employees retrieved successfully',
+            'data' => $mostActiveEmployees
+        ], 200);
+    }
 }
+
+

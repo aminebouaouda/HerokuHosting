@@ -11,6 +11,7 @@ use App\Http\Controllers\TimeTrackingController;
 use App\Http\Controllers\OrderDeplacmentController;
 use App\Http\Controllers\SentFeuilleController;
 use App\Http\Controllers\TrackingController;
+use App\Http\Controllers\TimesheetController;
 
 
 
@@ -45,6 +46,7 @@ Route::post('/getEmployeeLeave', [Director_Services_Controller::class, 'getEmplo
 Route::post('/AddProject', [Director_Services_Controller::class, 'AddProject']);
 Route::post('/fetchProjects', [Director_Services_Controller::class, 'fetchProjects']);
 Route::post('/DeleteProject', [Director_Services_Controller::class, 'DeleteProject']);
+Route::post('/getMostActiveEmployees', [Director_Services_Controller::class, 'getMostActiveEmployees']);
 
 //Pointage
 Route::post('/pointage', [Emplyee_Services_Controller::class, 'pointage']);
@@ -53,9 +55,11 @@ Route::post('/updatePauseEntry', [Emplyee_Services_Controller::class, 'updatePau
 Route::post('/TimeExite', [Emplyee_Services_Controller::class, 'TimeExite']);
 
 
+
 Route::post('/AddVacation', [VacationController::class, 'AddVacation']);
 Route::post('/employeeVacations', [VacationController::class, 'employeeVacations']);
 Route::post('/updateVacation', [VacationController::class, 'updateVacation']);
+
 
 
 
@@ -83,6 +87,10 @@ Route::post('/acceptOrderDeplacment', [OrderDeplacmentController::class, 'accept
 Route::post('/DeleteOrderDeplacment', [OrderDeplacmentController::class, 'DeleteOrderDeplacment']);
 Route::post('/updateLocalisationVerify', [OrderDeplacmentController::class, 'updateLocalisationVerify']);
 Route::post('/FineMession', [OrderDeplacmentController::class, 'FineMession']);
+Route::post('/countPendingOrders', [OrderDeplacmentController::class, 'countPendingOrders']);
+Route::post('/OrdersAccepter', [OrderDeplacmentController::class, 'OrdersAccepter']);
+Route::post('/OrdersFini', [OrderDeplacmentController::class, 'OrdersFini']);
+Route::post('/getOrderStatistics', [OrderDeplacmentController::class, 'getOrderStatistics']);
 
 
 
@@ -116,16 +124,23 @@ Route::delete('/deleteInvoice/{id}', [ResourceController::class, 'deleteInvoice'
 
 
 
-
-//pour feuille de temps employer
+//weklly Timesheet
 Route::post('/save-time-data', [TimeTrackingController::class, 'saveTimeData']);
-Route::get('/projects', [TimeTrackingController::class, 'FtechProjects']);
-Route::get('/get-total-regular-time', [TimeTrackingController::class, 'getTotalRegularTime']);
 Route::get('/projects', [TimeTrackingController::class, 'getProjects']);
+Route::get('/get-total-regular-time', [TimeTrackingController::class, 'getTotalRegularTime']);
 Route::get('/sum_regular', [TimeTrackingController::class, 'TotalRegularTime']);
 Route::delete('/delete_project', [TimeTrackingController::class, 'deleteProject']);
 Route::post('/sent-feuille', [SentFeuilleController::class, 'store']);
 Route::get('check-feuille', [SentFeuilleController::class, 'checkFeuille']);
+
+
+
+//Daily Timesheet
+Route::post('/savetimesheets', [TimesheetController::class, 'saveTimesheet']);
+Route::post('/sentTimesheet', [TimesheetController::class, 'sentTimesheet']);
+Route::post('/checksent', [TimesheetController::class, 'checkTimesheetStatus']);
+Route::get('/checksentRH', [TimesheetController::class, 'checkTimesheetStatus']);
+Route::post('/fetchTimesheetDetail', [TimesheetController::class, 'fetchTimesheetDetail']);
 
 
 //for new Tracking 2

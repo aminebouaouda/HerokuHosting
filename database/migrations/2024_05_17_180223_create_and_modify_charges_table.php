@@ -17,7 +17,7 @@ class CreateAndModifyChargesTable extends Migration
             // $table->string('title');
             // $table->double('prix');
             // $table->text('image');
-            $table->foreignId('id_order_deployment')->constrained('order_deplacments', 'id');
+            $table->foreignId('id_order_deployment')->constrained('order_deplacments');
             $table->double('budget_total');
             $table->json('images');
             $table->timestamps();

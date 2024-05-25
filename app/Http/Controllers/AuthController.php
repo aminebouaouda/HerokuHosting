@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\emailMailable; // Assuming you have a Mailable class for sending verification codes
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\File;
 
 
 
@@ -28,14 +29,22 @@ class AuthController extends Controller
     
         // Check if an image is uploaded
         if ($request->hasFile('image')) {
-            // $image = $request->file('image');
-            // $new_name = rand().'.'.$image->getClientOriginalExtension();
-             $new_name = '123.jpg';
+            $image = $request->file('image');
+            $new_name = uniqid() . '.' . $image->getClientOriginalExtension();
+            
+            // Ensure the directory exists
+            File::ensureDirectoryExists(public_path('/upload/images'));
+            
+            // Move the uploaded file to the destination directory
             $image->move(public_path('/upload/images'), $new_name);
+        
+            // File moved successfully
+            // Further processing...
         } else {
             // If no image is uploaded, assign a default image name
             $new_name = '123.jpg';
         }
+        
     
         // Create the user
         $user = User::create([

@@ -24,6 +24,8 @@ class OrderDeplacmentController extends Controller
             'titel' => 'required',
             'buteDeplacment' => 'required',
             'id_employee' => 'required',
+            'debut' => 'required',
+            'arriver' => 'required',
         ]);
 
         // Create a new OrderDeplacment instance with the request data
@@ -32,6 +34,8 @@ class OrderDeplacmentController extends Controller
             'titel' => $request->titel,
             'buteDeplacment' => $request->buteDeplacment,
             'id_employee' => $request->id_employee,
+            'debut' => $request->debut,
+            'arriver' => $request->arriver,
         ]);
 
         // Save the OrderDeplacment to the database
@@ -45,12 +49,16 @@ class OrderDeplacmentController extends Controller
 
     public function fetchOrderDeplacmentsForEmployee(Request $request)
     {
-        $id_employee = $request->input('id_employee', $request->id_employee); // Default to 40 if not provided
-
-        $orderDeplacments = OrderDeplacment::where('id_employee', $id_employee)->get();
-
+        $id_employee = $request->input('id_employee', $request->id_employee); // Ensure you have a default value if needed
+    
+        // Fetch order deplacments for the employee and order them by created_at in descending order
+        $orderDeplacments = OrderDeplacment::where('id_employee', $id_employee)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    
         return response()->json(['order_deplacments' => $orderDeplacments], 200);
     }
+    
 
     // ADD CHARGES 
 
@@ -101,6 +109,7 @@ class OrderDeplacmentController extends Controller
         $orderDeplacments = OrderDeplacment::join('users', 'order_deplacments.id_employee', '=', 'users.id')
             ->where('users.CompanyName', $request->CompanyName)
             ->select('order_deplacments.*')
+            ->orderBy('created_at', 'desc')
             ->get();
     
         if ($orderDeplacments->isEmpty()) {
@@ -209,5 +218,87 @@ public function FineMession(Request $request)
         return response()->json(['error' => 'Failed to finish mission'], 500);
     }
 }
+
+//Order not accepter
+
+public function countPendingOrders()
+{
+    try {
+        // Count the number of orders where is_accepte is equal to 0
+        $count = OrderDeplacment::where('is_accepte', 0)->count();
+
+        // Return the count
+        return response()->json(['count' => $count], 200);
+    } catch (\Exception $e) {
+        // Return an error response if an exception occurs
+        return response()->json(['error' => 'Failed to count pending orders'], 500);
+    }
+}
+
+//Order not accepter
+
+public function OrdersAccepter()
+{
+    try {
+        // Count the number of orders where is_accepte is equal to 0
+        $count = OrderDeplacment::where('is_accepte', 1)->count();
+
+        // Return the count
+        return response()->json(['count' => $count], 200);
+    } catch (\Exception $e) {
+        // Return an error response if an exception occurs
+        return response()->json(['error' => 'Failed to count pending orders'], 500);
+    }
+}
+
+//Order not Fini
+
+public function OrdersFini()
+{
+    try {
+        // Count the number of orders where is_accepte is equal to 0
+        $count = OrderDeplacment::where('mession_verify', 1)->count();
+
+        // Return the count
+        return response()->json(['count' => $count], 200);
+    } catch (\Exception $e) {
+        // Return an error response if an exception occurs
+        return response()->json(['error' => 'Failed to count pending orders'], 500);
+    }
+}
+
+//Statistic 
+public function getOrderStatistics()
+{
+    try {
+        // Count total orders
+        $totalOrders = OrderDeplacment::count();
+
+        // Count finished orders
+        $finishedOrders = OrderDeplacment::where('mession_verify', 1)->count();
+
+        // Count not accepted orders
+        $notAcceptedOrders = OrderDeplacment::where('is_accepte', 0)->count();
+
+        // Count verified orders
+        $verifiedOrders = OrderDeplacment::where('localisation_verify', '!=', null)->count();
+
+        // Calculate percentages
+        $percentageFinished = ($finishedOrders / $totalOrders) * 100;
+        $percentageNotAccepted = ($notAcceptedOrders / $totalOrders) * 100;
+        $percentageVerified = ($verifiedOrders / $totalOrders) * 100;
+
+        // Return the percentages
+        return response()->json([
+            'percentage_finished' => $percentageFinished,
+            'percentage_not_accepted' => $percentageNotAccepted,
+            'percentage_verified' => $percentageVerified,
+        ], 200);
+    } catch (\Exception $e) {
+        // Return an error response if an exception occurs
+        return response()->json(['error' => 'Failed to fetch order statistics'], 500);
+    }
+}
+
 
 }
