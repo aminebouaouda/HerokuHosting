@@ -135,6 +135,8 @@ Route::get('check-feuille', [SentFeuilleController::class, 'checkFeuille']);
 
 
 
+
+
 //Daily Timesheet
 Route::post('/savetimesheets', [TimesheetController::class, 'saveTimesheet']);
 Route::post('/sentTimesheet', [TimesheetController::class, 'sentTimesheet']);
@@ -144,10 +146,16 @@ Route::post('/fetchTimesheetDetail', [TimesheetController::class, 'fetchTimeshee
 
 
 //for new Tracking 2
+
+
+// use App\Http\Controllers\TrackingController;
+
 Route::post('/startTracking', [TrackingController::class, 'startTracking']);
 Route::post('/pauseTracking/{trackingId}', [TrackingController::class, 'pauseTracking']);
 Route::post('/resumeTracking/{trackingId}', [TrackingController::class, 'resumeTracking']);
 Route::post('/stopTracking/{trackingId}', [TrackingController::class, 'stopTracking']);
 Route::post('/updateTrackingRemarks/{trackingId}', [TrackingController::class, 'updateTrackingRemarks']);
-Route::post('/startPause/{trackingId}', [TrackingController::class, 'startPause']);
-Route::post('/endPause/{trackingId}', [TrackingController::class, 'endPause']);
+Route::post('/updateTrackingStatus/{trackingId}', [TrackingController::class, 'updateTrackingStatus']);
+// Route::post('/fetchProjects', [TrackingController::class, 'fetchProjects']);
+Route::post('/completeTracking/{trackingId}', [TrackingController::class, 'completeTracking']);
+// Route::post('/fetchProjects', [TrackingController::class, 'fetchProjects']);

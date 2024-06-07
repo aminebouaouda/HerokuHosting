@@ -12,8 +12,6 @@ use Illuminate\Support\Facades\Validator;
 class Emplyee_Services_Controller extends Controller
 {
 
-
-
 //ADD POINTAGE
     public function pointage(Request $request)
     {
@@ -105,8 +103,6 @@ public function updatePauseExit(Request $request)
         'data' => $pointage
     ], 200);
 }
-
-
 
 
 // Update Pause Entry

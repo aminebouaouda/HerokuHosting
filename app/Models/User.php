@@ -34,7 +34,6 @@ class User extends Authenticatable
         'role',
         'isactive',
         'profile'
-
     ];
 
     /**

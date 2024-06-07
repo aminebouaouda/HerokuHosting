@@ -11,30 +11,33 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->foreignId('current_team_id')->nullable();
-            $table->string('profile_photo_path', 2048)->nullable();
-            $table->timestamps();
-        });
         // Schema::create('users', function (Blueprint $table) {
         //     $table->id();
-        //     $table->string('firstname')->nullable();
-        //     $table->string('lastname')->nullable();
-        //     $table->string('companyName')->nullable();
-        //     $table->string('telephone')->nullable();
+        //     $table->string('name');
         //     $table->string('email')->unique();
+        //     $table->timestamp('email_verified_at')->nullable();
         //     $table->string('password');
-        //     $table->string('role')->nullable();
-        //     $table->boolean('isactive')->default(false);
-        //     $table->timestamps(); // This will create both created_at and updated_at columns
-        //     $table->string('profile')->nullable();
+        //     $table->rememberToken();
+        //     $table->foreignId('current_team_id')->nullable();
+        //     $table->string('profile_photo_path', 2048)->nullable();
+        //     $table->timestamps();
         // });
+        Schema::create('users', function (Blueprint $table) {
+            $table->id();
+            $table->string('firstname')->nullable();
+            $table->string('lastname')->nullable();
+            $table->string('CompanyName')->nullable();
+            $table->string('telephone')->nullable();
+            $table->string('email')->unique();
+            $table->string('password');
+            $table->foreignId('current_team_id')->nullable();
+            $table->string('role')->nullable();
+            $table->boolean('isactive')->default(false);
+            $table->timestamps(); // This will create both created_at and updated_at columns
+            $table->timestamp('email_verified_at')->nullable();
+            $table->string('profile')->nullable();
+            $table->rememberToken();
+        });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
