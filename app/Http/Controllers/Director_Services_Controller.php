@@ -8,63 +8,58 @@ use Carbon\Carbon;
 use App\Models\Project;
 use App\Models\Pointage;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+
 
 class Director_Services_Controller extends Controller
 {
     //ADD EMPLOYEE
-   
-
     public function AddEmployee(Request $request)
     {
         $added_by = $request->added_by;
-        $director = User::where('id', $added_by)->where('role', 'Director')->first(); // Fetch the director user
+    
+        $director = User::where('id', $added_by)->where('role', 'Derictor')->first(); // Fetch the director user
     
         if ($director) {
+
             $request->validate([
                 'firstname' => 'required',
                 'lastname' => 'required',
                 'email' => 'required|email|unique:users',
             ]);
-    
-            $companyName = $director->CompanyName;
-            $new_name = null; // Default image name set to null
-    
-            if ($request->hasFile('image')) {
-                try {
-                    $image = $request->file('image');
-                    $new_name = rand() . '.' . $image->getClientOriginalExtension();
-                    $image->move(public_path('/upload/images'), $new_name);
-                } catch (\Exception $e) {
-                    Log::error('Image upload failed: ' . $e->getMessage());
-                    $new_name = null; // Set to null if upload fails
-                }
-            }
-    
+
+            $companyName = $director->CompanyName; 
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $new_name = rand().'.'.$image->getClientOriginalExtension();
+            $image->move(public_path('/upload/images'), $new_name);
+            // return response()->json($new_name);
+        } else {
+            $new_name = '123.jpg';
+        }
+
             $user = User::create([
                 'firstname' => $request->firstname,
                 'lastname' => $request->lastname,
                 'CompanyName' => $companyName, // Use the retrieved CompanyName
                 'telephone' => $request->telephone,
                 'email' => $request->email,
-                'password' => bcrypt($request->email), // Encrypt the password
+                'password' => $request->email,
                 'role' => $request->role,
                 'isactive' => $request->isactive,
-                'profile' => $new_name // Set the profile image path or null
+                'profile' => $new_name
             ]);
-    
-            return response()->json([
+             return response()->json([
                 'message' => 'Employee add successful',
                 'user' => $user,
             ], 200);
-    
-        } else {
+
+            } else {
             return response()->json([
-                'message' => 'You don\'t have permission to add this user',
+                'message' => 'You dont have permission to add this user',
             ], 403);
-        }
+            }
     }
-    
 
     //Drop Employee
 
