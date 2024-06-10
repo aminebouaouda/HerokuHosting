@@ -32,7 +32,7 @@ class Director_Services_Controller extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $new_name = rand().'.'.$image->getClientOriginalExtension();
-            $image->move(public_path('/upload/images'), $new_name);
+            $image->move(public_path('public/upload/images'), $new_name);
             // return response()->json($new_name);
         } else {
             $new_name = '123.jpg';
