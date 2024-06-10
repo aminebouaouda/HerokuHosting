@@ -18,8 +18,6 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Install Laravel dependencies
-RUN composer install --timeout=600
 
 
 # Expose port 80
