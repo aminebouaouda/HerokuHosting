@@ -32,7 +32,7 @@ class Director_Services_Controller extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $new_name = rand().'.'.$image->getClientOriginalExtension();
-            $image->move(storage_path('app/public'), $new_name);
+            $image->move(storage_path('app/public/images'), $new_name);
             // return response()->json($new_name);
         } else {
             $new_name = '123.jpg';
@@ -111,7 +111,7 @@ class Director_Services_Controller extends Controller
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $new_name = rand().'.'.$image->getClientOriginalExtension();
-            $image->move(storage_path('app/public'), $new_name);
+            $image->move(storage_path('app/public/images'), $new_name);
             return response()->json([
                 'message' => 'image upload successful',
                 'name' => $new_name,

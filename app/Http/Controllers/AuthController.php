@@ -33,10 +33,10 @@ class AuthController extends Controller
             $new_name = uniqid() . '.' . $image->getClientOriginalExtension();
             
             // Ensure the directory exists
-            File::ensureDirectoryExists(storage_path('app/public'));
+            File::ensureDirectoryExists(storage_path('app/public/images'));
             
             // Move the uploaded file to the destination directory
-            $image->move(storage_path('app/public'), $new_name);
+            $image->move(storage_path('app/public/images'), $new_name);
         
             // File moved successfully
             // Further processing...
